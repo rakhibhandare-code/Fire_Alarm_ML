@@ -1,0 +1,21 @@
+# .NET generated files
+**/bin/
+**/obj/
+.vs/
+
+# Python generated files
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Private configuration
+appsettings.Development.json
+.env
+.env.*
+
+# IDE files
+.vscode/
+
+# Temporary files
+*.log

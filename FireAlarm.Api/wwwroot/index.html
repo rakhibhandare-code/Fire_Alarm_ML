@@ -1,0 +1,273 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FireGuard - Fire Risk Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>🔥 FireGuard</h2>
+    <nav>
+        <a class="active" href="#dashboard">Dashboard</a>
+        <a href="#sensors">Sensor Monitoring</a>
+        <a href="#alerts">Fire Risk Notifications</a>
+        <a href="#trends">Live Graphs</a>
+        <a href="#history">Sensor History</a>
+    </nav>
+    <div class="sidebar-bottom">
+        <span class="status-dot"></span> System Monitoring
+    </div>
+</div>
+
+<main class="main-content">
+
+    <header class="topbar">
+        <div>
+            <h1>FireGuard Dashboard</h1>
+            <p>Real-time IoT Sensor Monitoring and Experimental Fire Risk Classification</p>
+        </div>
+        <div class="connection">
+            <span class="status-dot" id="connectionDot"></span>
+            <span id="connectionStatus">Connecting...</span>
+        </div>
+    </header>
+
+    <section class="welcome">
+        <div>
+            <h2>Welcome to FireGuard Monitoring</h2>
+            <p>Monitor sensor readings and experimental ML predictions.</p>
+        </div>
+        <div class="date" id="currentDate">--</div>
+    </section>
+
+    <!-- SENSOR OVERVIEW -->
+
+    <section class="section" id="dashboard">
+        <h2>Sensor Overview</h2>
+
+        <div class="cards">
+            <div class="card">
+                <div class="card-icon">🌡️</div>
+                <h3>Temperature</h3>
+                <div class="value" id="temperature">-- °C</div>
+                <p>DHT22 sensor</p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">💧</div>
+                <h3>Humidity</h3>
+                <div class="value" id="humidity">-- %</div>
+                <p>DHT22 sensor</p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">🔥</div>
+                <h3>Methane Level</h3>
+                <div class="value" id="methane">-- ppm</div>
+                <p>MQ-4 approximate reading</p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">⚡</div>
+                <h3>MQ-4 Voltage</h3>
+                <div class="value" id="voltage">-- V</div>
+                <p>Sensor output voltage</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ML PREDICTION -->
+
+    <section class="section" id="sensors">
+        <h2>Machine Learning Fire Risk Prediction</h2>
+
+        <div class="prediction-card">
+            <div>
+                <p>Latest Model Classification</p>
+                <h2 id="prediction">Waiting for data...</h2>
+                <small>Random Forest experimental classification</small>
+            </div>
+            <div class="prediction-icon" id="predictionIcon">🛡️</div>
+        </div>
+
+        <div class="extra-cards">
+            <div class="small-card">
+                <h3>MQ-4 Sensor Resistance</h3>
+                <p id="resistance">-- kΩ</p>
+            </div>
+
+            <div class="small-card">
+                <h3>Last Updated</h3>
+                <p id="lastUpdated">Waiting...</p>
+            </div>
+
+            <div class="small-card">
+                <h3>Database Status</h3>
+                <p id="databaseStatus">Checking...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FIRE RISK ALERTS -->
+
+    <section class="section" id="alerts">
+
+        <div class="section-heading">
+            <h2>Fire Risk Notifications</h2>
+            <span class="alert-count" id="alertCount">0 Risk Predictions</span>
+        </div>
+
+        <div class="alert-summary">
+
+            <div class="alert-stat">
+                <span class="alert-stat-icon">🟢</span>
+                <div>
+                    <h3 id="normalCount">0</h3>
+                    <p>Normal</p>
+                </div>
+            </div>
+
+            <div class="alert-stat">
+                <span class="alert-stat-icon">🟡</span>
+                <div>
+                    <h3 id="lowRiskCount">0</h3>
+                    <p>Low Fire Risk</p>
+                </div>
+            </div>
+
+            <div class="alert-stat">
+                <span class="alert-stat-icon">🟠</span>
+                <div>
+                    <h3 id="mediumRiskCount">0</h3>
+                    <p>Medium Fire Risk</p>
+                </div>
+            </div>
+
+            <div class="alert-stat">
+                <span class="alert-stat-icon">🔴</span>
+                <div>
+                    <h3 id="highRiskCount">0</h3>
+                    <p>High Fire Risk</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="alert-panel">
+
+            <div class="alert-panel-header">
+                <div>
+                    <h3>Recent Risk Notifications</h3>
+                    <p>Latest experimental ML predictions from MySQL</p>
+                </div>
+
+                <button id="clearAlerts" class="clear-button" type="button">
+                    Clear view
+                </button>
+            </div>
+
+            <div id="alertList" class="alert-list">
+                <p class="empty-alert">Loading notifications...</p>
+            </div>
+
+        </div>
+
+        <p class="safety-note">
+            Experimental demonstration only. MQ-4 measures methane response,
+            not fire or smoke. Do not rely on this prototype for safety.
+        </p>
+
+    </section>
+
+    <!-- LIVE GRAPHS -->
+
+    <section class="section" id="trends">
+
+        <div class="section-heading">
+            <h2>Live Sensor Trends</h2>
+            <span class="live-label">
+                <span class="status-dot"></span> Auto refresh
+            </span>
+        </div>
+
+        <div class="charts">
+
+            <div class="chart-card">
+                <h3>Temperature History</h3>
+                <canvas id="temperatureChart"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <h3>Methane History</h3>
+                <canvas id="methaneChart"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <h3>Humidity History</h3>
+                <canvas id="humidityChart"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <h3>MQ-4 Voltage History</h3>
+                <canvas id="voltageChart"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <h3>Fire Risk Distribution</h3>
+                <canvas id="riskChart"></canvas>
+            </div>
+
+        </div>
+
+        <p class="chart-note">
+            Charts display the latest 50 saved sensor readings.
+        </p>
+
+    </section>
+
+    <!-- SENSOR HISTORY -->
+
+    <section class="section" id="history">
+
+        <h2>Recent Sensor Readings</h2>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Temperature</th>
+                        <th>Humidity</th>
+                        <th>Methane</th>
+                        <th>Fire Risk Class</th>
+                        <th>Date & Time</th>
+                    </tr>
+                </thead>
+
+                <tbody id="historyTable">
+                    <tr>
+                        <td colspan="6">Loading sensor history...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+
+    <footer>
+        FireGuard IoT Monitoring System
+        <br>
+        ESP32 + DHT22 + MQ-4 + Random Forest + MySQL
+        <p>Experimental demonstration only — not a certified safety system.</p>
+    </footer>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
